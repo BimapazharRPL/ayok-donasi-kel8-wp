@@ -1,0 +1,257 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 0;
+  background-color: #f5fff5;
+  color: #2d2d2d;
+}
+a {
+  text-decoration: none;
+  color: #1e90ff;
+}
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Navbar */
+.navbar {
+  background: #ADD8E6;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+.nav-links li a {
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.nav-links li a:hover {
+  color: #cceeff;
+}
+
+/* Logo Image */
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+.logo-text {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Profil box */
+.profil {
+  left: 0;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.5s ease;
+  opacity: 0;
+  /* Menyembunyikan elemen secara visual */
+  transform: scale(0.95);
+  pointer-events: none;
+  /* Mencegah interaksi pengguna dengan elemen */
+}
+
+/* Saat aktif (ditampilkan lewat JS) */
+.profil.show {
+  opacity: 1;
+  display: block;
+  transform: scale(1);
+  pointer-events: auto;
+  /* Default – elemen bisa diklik dan dihover */
+}
+
+/* Tabel profil */
+.profil table {
+  width: 100%;
+  margin-bottom: 15px;
+}
+.profil td {
+  padding: 8px;
+  vertical-align: top;
+  /* akan menyelaraskan bagian atas elemen dengan bagian atas elemen lain di baris yang sama. */
+  border-bottom: solid 1px #333;
+}
+.profil p {
+  margin: 0;
+}
+
+/* Tombol logout */
+.profil a {
+  display: inline-block;
+  background-color: teal;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.profil a:hover {
+  background-color: rgb(1, 118, 118);
+}
+
+
+
+/* Sections */
+.section-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #003366;
+}
+
+
+
+/* Footer */
+.footer {
+  background: #ADD8E6;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+}
+.footer a {
+  color: #cceeff;
+  font-weight: bold;
+}
+
+
+/* pembayaran */
+.donation-form {
+  background-color: #d3e7e6;
+  padding: 20px;
+  margin-top: 40px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center; 
+}
+
+.donation-container {
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto; 
+}
+
+.donation-form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+}
+.donation-form input[type="text"],
+.inputnumber,
+.donation-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 2px solid teal;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+
+.inputnumber {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 2px solid teal;
+  border-radius: 6px;
+  font-size: 16px;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.inputnumber:focus {
+  outline: none;
+  border-color: #006666;
+  background-color: #f0fdfd;
+}
+
+
+
+.donation-form textarea {
+  resize: vertical;
+  /* igunakan untuk mengizinkan pengguna mengubah ukuran (resize) elemen HTML secara vertikal saja */
+  height: 50px;
+}
+
+.payment-section {
+  margin-top: 20px;
+  background-color: #e1efef;
+  padding: 15px;
+  border-radius: 8px;
+}
+.qris-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+.qris-box img {
+  height: 10rem;
+  padding: 1rem;
+
+}
+.total-pay {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+.donation-form button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: teal;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.donation-form button:hover {
+  background-color: #006666;
+}
+
+@media (max-width: 460px) {
+.navbar, .container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .nav-links {
+    line-height: 0ch;
+  }
+}

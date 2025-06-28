@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Riwayat Donasi</title>
+  <link rel="shortcut icon" href="gambar/tangan.png" type="image/x-icon">
+  <link rel="stylesheet" href="styles2.css" />
+  <style>
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 100, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    thead {
+      background-color: rgb(166, 215, 255);
+      color: #ffffff;
+      text-align: left;
+    }
+    th, td {
+      padding: 14px 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    tbody tr:hover {
+      background-color: #f0f8ff;
+    }
+    td {
+      color: #333333;
+    }
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Profil box */
+    .profil {
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: none;
+      transition: all 0.3s ease;
+    }
+    .profil.show {
+      display: block;
+    }
+    .profil table {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    .td {
+      padding: 8px;
+      vertical-align: top;
+      border-bottom: solid 1px #333;
+    }
+
+    @media screen and (max-width: 750px) {
+      .table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead {
+        display: none;
+      }
+      tr {
+        margin-bottom: 15px;
+        background: #fff;
+        border: 1px solid #dceeff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 100, 0.05);
+        padding: 10px;
+      }
+      td {
+        position: relative;
+        padding-left: 35%;
+        border: none;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: left;
+      }
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        width: 45%;
+        font-weight: bold;
+        color: #004080;
+        white-space: nowrap;
+      }
+      td:last-child {
+        border-bottom: none;
+      }
+    }
+  </style>
+</head>
+<body onload="tampilkanRiwayatDonasi()">
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo-area">
+        <img src="gambar/tangan.png" class="logo-img" alt="Logo" />
+        <h1 class="logo-text">Donasi</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="beranda.html">Beranda</a></li>
+        <li><a href="riwayatDonasi.html">Riwayat Donasi</a></li>
+        <li><a href="#" id="profileLink">Profil</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="profil" id="profil">
+    <h4>Profil Kamu</h4><br>
+    <table>
+      <tr>
+        <td class="td"><b>Nama</b></td>
+        <td class="td"><b>:</b></td>
+        <td class="td"><p id="namamu"></p></td>
+      </tr>
+      <tr>
+        <td class="td"><b>Email</b></td>
+        <td class="td"><b>:</b></td>
+        <td class="td"><p id="emailmu"></p></td>
+      </tr>
+    </table><br>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+
+  <div class="container">
+    <h2><br>Riwayat Donasi</h2>
+    <p id="ucapan"></p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Email</th>
+          <th>Jumlah</th>
+          <th>Donasi</th>
+          <th>Metode</th>
+          <th>Pesan</th>
+        </tr>
+      </thead>
+      <tbody id="donasiBody"></tbody>
+    </table>
+    <br>
+    <a href="beranda.html">⬅ Kembali ke Beranda</a>
+  </div>
+
+  <script>
+    function tampilkanRiwayatDonasi() {
+      const nama = sessionStorage.getItem("nama");
+      const email = sessionStorage.getItem("email");
+
+      if (!nama || !email) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      document.getElementById("namamu").textContent = nama;
+      document.getElementById("emailmu").textContent = email;
+      document.getElementById("ucapan").innerHTML = `Halo <strong>${nama}</strong>, berikut data donasi kamu:`;
+
+      const dataDonasi = JSON.parse(localStorage.getItem("donasiRiwayat") || "[]");
+      const donasiBody = document.getElementById("donasiBody");
+      const dataUser = dataDonasi.filter(d => d.email === email);
+
+      if (dataUser.length === 0) {
+        donasiBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Belum ada donasi atas nama kamu.</td></tr>`;
+      } else {
+        dataUser.reverse().forEach(d => {
+          const row = `
+            <tr>
+              <td data-label='Nama'>${d.nama}</td>
+              <td data-label='Email'>${d.email}</td>
+              <td data-label='Jumlah'>Rp ${parseInt(d.jumlah).toLocaleString("id-ID")}</td>
+              <td data-label='Donasi'>${d.donasi}</td>
+              <td data-label='Metode'>${d.metode}</td>
+              <td data-label='Pesan'>${d.pesan}</td>
+            </tr>
+          `;
+          donasiBody.insertAdjacentHTML("beforeend", row);
+        });
+      }
+    }
+
+    // Toggle profil
+    document.getElementById("profileLink").addEventListener("click", function (e) {
+      e.preventDefault();
+      const profil = document.getElementById("profil");
+      profil.classList.toggle("show");
+      profil.scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!profil.contains(e.target) && !document.getElementById("profileLink").contains(e.target)) {
+        profil.classList.remove("show");
+      }
+    });
+
+    profil.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

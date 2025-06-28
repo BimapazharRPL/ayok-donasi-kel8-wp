@@ -1,0 +1,471 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; 
+  /* ox-sizing: border-box membuat ukuran elemen tetap walau diberi padding/border. */
+}
+body {
+  font-family: 0;
+  background-color: #f5fff5;
+  color: #2d2d2d;
+  /* Mengatur latar belakang dan warna teks seluruh halaman. */
+}
+a {
+  text-decoration: none;
+  /* Menghilangkan underline pada link. */
+  color: #1e90ff;
+}
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
+  /* .container adalah pembungkus responsif. */
+}
+
+/* Navbar */
+.navbar {
+  background: #ADD8E6;
+  padding: 15px 0;
+  position: sticky;
+  /* Navbar tetap di atas saat di-scroll (sticky). */
+  top: 0;
+  z-index: 10;
+}
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-img {
+  height: 40px;
+}
+.logo-text {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  /* Menghilangkan bullet dan menyusun menu secara horizontal dengan jarak antar item. */
+}
+.nav-links li a {
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+  /* Efek transisi halus selama 0.3 detik ketika ada perubahan gaya, seperti saat hover (contohnya perubahan warna). */
+}
+.nav-links li a:hover {
+  /* berlaku saat kursor mouse berada di atas elemen <a>. */
+  color: #cceeff;
+}
+
+/* Hero */
+.hero {
+  background: url('gambar/donasi.jpg') no-repeat center/cover;
+  /* Menetapkan gambar latar: no-repeat: jangan diulang. center/cover: pusatkan gambar dan isi seluruh area  */
+  height: 90vh;
+  /* Tinggi elemen adalah 90% dari tinggi layar browser. */
+  display: flex;
+  align-items: center;
+  /* Menengahkan isi secara vertikal. */
+  justify-content: center;
+  /* Menengahkan isi secara horizontal. */
+  color: grey;
+  text-align: center;
+  /* Teks di dalam elemen .hero akan rata tengah. */
+  position: relative;
+  /* Menjadikan elemen .hero sebagai acuan posisi absolut bagi elemen anak seperti ::after. */
+}
+.hero::after {
+  content: "";
+  background: transparant(0, 100, 0, 0.6); 
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+.hero-content h2 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+.hero .btn {
+  background-color: #fff;
+  color: #808080;
+  padding: 10px 25px;
+  font-weight: bold;
+  border-radius: 30px;
+  margin-top: 20px;
+  display: inline-block;
+  /* Menjadikan elemen tampil seperti teks (inline) tapi tetap bisa diberi ukuran dan padding, seperti block. */
+  transition: 0.3s ease;
+  /* Mengaktifkan efek transisi halus selama 0.3 detik saat ada perubahan gaya (seperti warna saat hover). */
+}
+.hero .btn:hover {
+  background-color: #cceeff;
+  color: #003366;
+}
+
+/* Sections */
+.section-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #003366;
+}
+.about, .team {
+  padding: 50px 0;
+  
+}
+.about p {
+  font-size: 1em;
+  text-align: center;
+}
+
+/* Team */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  /* Ini adalah inti dari layout responsif. */
+  gap: 20px;
+  /* Menambahkan jarak 20px antar kolom dan baris dalam grid. */
+  margin-top: 30px;
+}
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.card span {
+  display: block;
+  color: gray;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+/* Footer */
+.footer {
+  background: #ADD8E6;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+}
+.footer a {
+  color: #cceeff;
+  font-weight: bold;
+}
+
+/* Logo Image */
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+.logo-text {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Hero Gambar */
+.hero-img {
+  width: 180px;
+  margin: 20px auto;
+  display: block;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.2));
+  /* digunakan untuk memberikan bayangan pada elemen, mirip seperti box-shadow, tapi dengan cara yang sedikit berbeda. */
+}
+
+
+button {
+  padding: 8px 110px;
+  background-color: #ADD8E6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-section {
+  background-color: #eafaf1;
+  padding: 80px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.login-box {
+  background-color: #ffffff;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin: auto;
+  max-width: 274px;
+  cursor: pointer;
+  /* mengubah bentuk kursor mouse menjadi tangan menunjuk (seperti saat mengarahkan kursor ke link). */
+}
+
+
+.form-login input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 2px solid grey;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-login input:focus {
+  outline: none;
+  /* Menghapus garis fokus default */
+  border-color: #ADD8E6;
+}
+
+.form-login button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #ADD8E6;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-login button:hover {
+  background-color: #ADD8E6;
+}
+
+
+
+.news-section {
+  background-color: #f0fff4;
+  padding: 80px 80px;
+}
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+  /* digunakan untuk membuat layout grid responsif, di mana jumlah kolom akan menyesuaikan lebar layar secara otomatis. */
+  gap: 40px;
+  margin-top: 30px;
+}
+.news-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 25px;
+  transition: transform 0.3s;
+  height: 100%;
+}
+.news-card:hover {
+  transform: scale(1.02);
+}
+.news-img {
+  width: 100%;
+  height: 250px; 
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+.news-card h4 {
+  margin: 0 0 5px;
+  font-size: 25px;
+  color: grey;
+  text-align: center;
+}
+
+.auth-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  gap: 20px;
+}
+
+.form-box {
+  background: white;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 300px;
+}
+
+.form-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #003366;
+}
+
+.form-box input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-box button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ADD8E6;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-box button:hover {
+  background-color: #87cefa;
+}
+
+.form-box p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* RESPONSIVE: Ukuran kecil (≤768px) */
+@media (max-width: 768px) {
+ /* .container, */
+  .hero-content,
+  .news-grid,
+  .team-grid,
+  .login-container {
+    flex-direction: column;
+    /* Elemen-elemen anak akan ditumpuk dari atas ke bawah, secara vertikal, bukan horizontal (default-nya). */
+    align-items: center;
+    text-align: center;
+  }
+
+.login-section {
+  padding: 18px 15px;
+}
+
+  .hero {
+    height: auto;
+    padding: 80px 20px;
+  }
+
+  .news-section {
+  padding: 5px 5px;
+}
+
+  .news-grid {
+    grid-template-columns: 1fr;
+    /* Membuat satu kolom grid yang lebar penuh (fleksibel) */
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-login input,
+  .form-login button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .form-login button {
+    padding: 10px;
+  }
+
+  .login-box {
+    max-width: 274px;
+  }
+
+  .nav-links {
+    line-height: 0ch;
+  }
+}
+
+/* RESPONSIVE: Ukuran sangat kecil (≤400px) */
+@media (max-width: 460px) {
+.container,
+  .hero-content,
+  .news-grid,
+  .team-grid,
+  .login-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-content h2 {
+    font-size: 1.8em;
+  }
+
+  .section-title {
+    font-size: 1.6em;
+  }
+
+  .news-img {
+    height: 200px;
+  }
+
+  .form-login input,
+  .form-login button {
+    font-size: 13px;
+  }
+
+  .logo-text {
+    font-size: 20px;
+  }
+
+  button {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+}
+
+/* RESPONSIVE: Ukuran ekstrim kecil (≤300px) */
+@media (max-width: 300px) {
+  .hero-content h2 {
+    font-size: 1.4em;
+  }
+
+  .section-title {
+    font-size: 1.4em;
+  }
+
+  .form-login input,
+  .form-login button {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+
+  .login-box {
+    padding: 20px;
+  }
+}
+
+

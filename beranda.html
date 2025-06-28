@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pembayaran</title>
+  <link rel="stylesheet" href="styles2.css" />
+ 
+</head>
+<body onload="initPage()">
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container">
+    <div class="logo-area">
+      <img src="gambar/tangan.png" class="logo-img" alt="Logo" />
+      <h1 class="logo-text">Donasi</h1>
+    </div>
+    <ul class="nav-links">
+      <li><a href="beranda.html">Beranda</a></li>
+      <li><a href="riwayatDonasi.html">Riwayat Donasi</a></li>
+      <li><a href="#" id="profileLink">Profil</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Profil -->
+<div class="profil" id="profil">
+  <h4>Profil Kamu</h4><br>
+  <table>
+    <tr>
+      <td><b>Nama</b></td>
+      <td><b>:</b></td>
+      <td><p id="namamu"></p></td>
+    </tr>
+    <tr>
+      <td><b>Email</b></td>
+      <td><b>:</b></td>
+      <td><p id="emailmu"></p></td>
+    </tr>
+  </table><br>
+  <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<!-- Ucapan -->
+<div style="text-align: center; margin-top: 20px;">
+  <h2>Selamat Datang di Halaman Pembayaran</h2>
+  <p id="tampil"></p>
+</div>
+
+<!-- Form Donasi -->
+<section class="donation-form">
+  <div class="donation-container">
+    <h3 class="section-title">Form Donasi</h3>
+
+    <label>Jumlah Donasi</label>
+    <input type="text" id="jumlah" placeholder="Rp" oninput="formatRibuan(this); updateTotal();">
+
+    <label>Pesan / Salam</label>
+    <textarea id="pesan" placeholder="Tulis pesan Anda..."></textarea>
+
+    <label>Pilih Donasi Ke mana :</label>
+    <select id="donasi" class="inputnumber">
+      <option value="" disabled selected>-- pilih Donasi --</option>
+      <option value="Bencana Alam">Bencana Alam</option>
+      <option value="Yayasan">Yayasan</option>
+      <option value="Pesantren">Pesantren</option>
+      <option value="Panti Asuhan">Panti Asuhan</option>
+      <option value="Yatim Piatu">Yatim Piatu</option>
+      <option value="Donasi Lainnya">Donasi Lainnya</option>
+    </select>
+
+    <div class="payment-section">
+      <h4>💳 Pilih Metode Pembayaran</h4>
+      <label><input type="radio" name="metode" value="QRIS" onclick="setMetode('QRIS')"> QRIS</label>
+      <label><input type="radio" name="metode" value="VA" onclick="setMetode('VA')"> Virtual Account</label>
+
+      <div id="qris-barcode" style="display: none;">
+        <br>
+        <p><strong>Scan QRIS di bawah ini untuk membayar:</strong></p>
+        <div class="qris-box">
+          <img src="gambar/barcode.png" alt="QRIS Barcode" style="max-width: 250px;" />
+        </div>
+      </div>
+
+      <div id="bank-options" style="display: none;">
+        <label for="bank">Pilih Bank:</label>
+        <select id="bank" class="inputnumber">
+          <option value="" disabled selected>-- pilih bank --</option>
+          <option value="BNI">BNI</option>
+          <option value="BRI">BRI</option>
+          <option value="Mandiri">Mandiri</option>
+          <option value="BCA">BCA</option>
+          <option value="Bank Lainnya">Bank Lainnya</option>
+        </select>
+        <label for="noRekening">Nomor Rekening Anda:</label>
+        <input class="inputnumber" type="number" id="noRekening">
+      </div>
+    </div>
+
+    <div class="total-pay">
+      <strong>Total Bayar:</strong> <span id="total-text">Rp0</span>
+    </div>
+
+    <button onclick="simpanDonasi()">Bayar Sekarang ➜</button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2025 Donation</p>
+  </div>
+</footer>
+
+<script>
+function initPage() {
+  const nama = sessionStorage.getItem("nama");
+  const email = sessionStorage.getItem("email");
+  if (!nama || !email) {
+    window.location.href = "index.html";
+    return;
+  }
+  document.getElementById("namamu").textContent = nama;
+  document.getElementById("emailmu").textContent = email;
+  document.getElementById("tampil").innerHTML = `Halo, <b>${nama}</b>! Kebaikanmu hari ini adalah harapan bagi mereka yang membutuhkan.`;
+  if (!sessionStorage.getItem("sudahMuncul")) {
+    alert("Halo " + nama + "! Selamat datang di halaman pembayaran!");
+    sessionStorage.setItem("sudahMuncul", "true");
+  }
+}
+
+ // Toggle tampilkan profil saat klik "Profile"
+ document.getElementById("profileLink").addEventListener("click", function (e) {
+  e.preventDefault();
+  const profilDiv = document.getElementById("profil");
+  profilDiv.classList.add("show");
+  profilDiv.style.display = "block";
+
+  //Scroll ke paling atas
+   window.scrollTo({ top: 0, behavior: "smooth" });
+   
+  // Hentikan propagasi agar klik di tombol tidak dianggap klik di luar
+  e.stopPropagation();
+});
+
+// Tutup profil jika klik di mana saja (kecuali dalam div profil)
+document.addEventListener("click", function (e) {
+  const profilDiv = document.getElementById("profil");
+  const profileLink = document.getElementById("profileLink");
+
+  // Cek apakah kliknya bukan di profil dan bukan di tombol "Profile"
+  if (
+    !profilDiv.contains(e.target) &&
+    !profileLink.contains(e.target)
+  ) { // Jika pengguna mengklik di luar profil dan di luar tombol "Profile", maka...
+    profilDiv.classList.remove("show"); // Menghapus class show dari #profil
+    profilDiv.style.display = "none"; // Menyetel display: none, agar elemen tidak tampak
+  }
+});
+
+// Supaya klik di dalam profil tidak menutup div
+document.getElementById("profil").addEventListener("click", function (e) {
+  e.stopPropagation();
+});
+
+
+function logout() {
+  sessionStorage.clear();
+  location.href = "index.html";
+}
+
+function setMetode(metode) {
+  const isVA = metode === 'VA';
+  document.getElementById("bank-options").style.display = isVA ? "block" : "none";
+  document.getElementById("qris-barcode").style.display = isVA ? "none" : "block";
+}
+
+function formatRibuan(input) {
+  let angka = input.value.replace(/\D/g, "");
+  input.value = angka.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function updateTotal() {
+  const jumlahStr = document.getElementById("jumlah").value.replace(/\./g, "");
+  const jumlah = parseInt(jumlahStr);
+  document.getElementById("total-text").textContent = isNaN(jumlah) ? "Rp0" : "Rp" + jumlah.toLocaleString("id-ID");
+}
+
+function simpanDonasi() {
+  const jumlahStr = document.getElementById("jumlah").value.replace(/\./g, "");
+  const jumlah = parseInt(jumlahStr);
+  const pesan = document.getElementById("pesan").value || "(tidak ada)";
+  const donasi = document.getElementById("donasi").value;
+  const metodeRadio = document.querySelector('input[name="metode"]:checked');
+  const nama = sessionStorage.getItem("nama");
+  const email = sessionStorage.getItem("email");
+
+  if (!jumlah || isNaN(jumlah) || jumlah <= 0 || !metodeRadio || !donasi) {
+    alert("Mohon lengkapi data donasi terlebih dahulu!");
+    return;
+  }
+
+  let metode = metodeRadio.value === "VA"
+    ? "Virtual Account - " + document.getElementById("bank").value + " (Rek: " + document.getElementById("noRekening").value + ")"
+    : "QRIS";
+
+  const data = { nama, email, jumlah, pesan, donasi, metode, waktu: new Date().toISOString() };
+
+  const riwayat = JSON.parse(localStorage.getItem("donasiRiwayat") || "[]");
+  riwayat.push(data);
+  localStorage.setItem("donasiRiwayat", JSON.stringify(riwayat));
+
+  alert("Donasi berhasil disimpan!");
+  window.location.href = "riwayatDonasi.html";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="gambar/tangan.png" type="image/x-icon">
+  <title>Donasi !</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo-area">
+        <img src="gambar/tangan.png" class="logo-img" />
+        <h1 class="logo-text">Donasi</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home">Beranda</a></li>
+        <li><a href="#tentang">Tentang</a></li>
+        <li><a href="#form-auth">Login</a></li>
+        <li><a href="#team">Tim</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="home">
+    <div class="hero-content">
+      <h2>Ayok Berdonasi !</h2>
+      <a href="#tentang" class="btn">Mulai Jelajah</a>
+    </div>
+  </header>
+
+  <section class="news-section" id="tentang">
+    <div class="container">
+      <h3 class="section-title">Tentang</h3>
+      <div class="news-grid">
+        <div class="news-card">
+          <img src="gambar/jabat tangan.jpg" alt="Donasi" class="news-img">
+          <h4>Donasi</h4>
+          <p style="text-align: justify;">Donasi adalah tindakan sukarela...</p>
+        </div>
+        <div class="news-card">
+          <img src="gambar/anak.jpg" alt="Pentingnya Donasi" class="news-img">
+          <h4>Pentingnya Donasi</h4>
+          <p>1. Membantu Masyarakat...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="login-section" id="form-auth">
+    <div class="auth-wrapper">
+      <div class="form-box" id="login-form">
+        <h2>Login</h2>
+        <div id="error-msg" style="color: red; text-align: center; display: none;">Login gagal. Coba lagi.</div>
+        <form>
+          <label>Email:</label><br><input type="email" name="email" required><br><br>
+          <label>Password:</label><br><input type="password" name="password" required><br><br>
+          <button type="submit">Login</button>
+        </form>
+        <p>Belum punya akun? <a href="#form-auth" onclick="showRegister()">Buat Akun</a></p>
+      </div>
+      <div class="form-box" id="register-form" style="display: none;">
+        <h2>Daftar</h2>
+        <form>
+          <label>Nama:</label><br><input type="text" name="nama" required><br><br>
+          <label>Email:</label><br><input type="email" name="email" required><br><br>
+          <label>Password:</label><br><input type="password" name="password" required><br><br>
+          <button type="submit">Daftar</button>
+        </form>
+        <p>Sudah punya akun? <a href="#form-auth" onclick="showLogin()">Login</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="team" id="team">
+    <div class="container">
+      <h3 class="section-title">Tim Pengembang</h3>
+      <div class="team-grid">
+        <div class="card">Muhamad Aufaa Yaafi Sulaeman<span>19241474</span></div>
+        <div class="card">Haikal Firmansyah<span>19242049</span></div>
+        <div class="card">Indah Amelia Putri<span>19240208</span></div>
+        <div class="card">Bima Fazhar <span>19240686</span></div>
+        <div class="card">Faisal Azriel Maksumi <span>19240843</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="contact">
+    <div class="container">
+      <p>&copy; 2025 Donation</p>
+    </div>
+  </footer>
+
+  <script>
+    function showRegister() {
+      document.getElementById("login-form").style.display = "none";
+      document.getElementById("register-form").style.display = "block";
+    }
+    function showLogin() {
+      document.getElementById("register-form").style.display = "none";
+      document.getElementById("login-form").style.display = "block";
+    }
+    function getAkunList() {
+      return JSON.parse(localStorage.getItem("akunList") || "[]");
+    }
+    function saveAkun(nama, email, password) {
+      const akunList = getAkunList();
+      akunList.push({ nama, email, password });
+      localStorage.setItem("akunList", JSON.stringify(akunList));
+    }
+    function loginHandler(e) {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      const akunList = getAkunList();
+      const user = akunList.find(a => a.email === email && a.password === password);
+      if (user) {
+        sessionStorage.setItem("nama", user.nama);
+        sessionStorage.setItem("email", user.email);
+        window.location.href = "beranda.html";
+      } else {
+        document.getElementById("error-msg").style.display = "block";
+      }
+    }
+    function registerHandler(e) {
+      e.preventDefault();
+      const nama = e.target.nama.value;
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      const akunList = getAkunList();
+      if (akunList.some(a => a.email === email)) {
+        alert("Email sudah terdaftar.");
+        return;
+      }
+      saveAkun(nama, email, password);
+      alert("Berhasil daftar! Silakan login.");
+      showLogin();
+    }
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("error") === "1") {
+        document.getElementById("error-msg").style.display = "block";
+        showLogin();
+      }
+      const loginForm = document.querySelector("#login-form form");
+      const registerForm = document.querySelector("#register-form form");
+      loginForm.addEventListener("submit", loginHandler);
+      registerForm.addEventListener("submit", registerHandler);
+    };
+  </script>
+</body>
+</html>
