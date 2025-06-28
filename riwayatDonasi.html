@@ -7,6 +7,7 @@
   <link rel="shortcut icon" href="gambar/tangan.png" type="image/x-icon">
   <link rel="stylesheet" href="styles2.css" />
   <style>
+    /* TABEL DONASI */
     .table {
       width: 100%;
       border-collapse: collapse;
@@ -22,20 +23,21 @@
       color: #ffffff;
       text-align: left;
     }
-    th, td {
+    th, .td1 {
       padding: 14px 20px;
       border-bottom: 1px solid #e0e0e0;
+    }
+    .td1 {
+      color: #333333;
     }
     tbody tr:hover {
       background-color: #f0f8ff;
     }
-    td {
-      color: #333333;
-    }
-    tbody tr:last-child td {
+    tbody tr:last-child .td1 {
       border-bottom: none;
     }
 
+    /* TABEL PROFIL */
     .profil {
       max-width: 400px;
       margin: 20px auto;
@@ -45,6 +47,7 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       display: none;
       transition: all 0.3s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .profil.show {
       display: block;
@@ -52,6 +55,7 @@
     .profil table {
       width: 100%;
       margin-bottom: 15px;
+      border-collapse: collapse;
     }
     .td {
       padding: 8px;
@@ -59,14 +63,19 @@
       border-bottom: solid 1px #333;
     }
 
+    /* RESPONSIF HANYA UNTUK TABEL DONASI */
     @media screen and (max-width: 750px) {
-      .table, thead, tbody, th, td, tr {
+      .table {
         display: block;
       }
-      thead {
+      .table thead {
         display: none;
       }
-      tr {
+      .table tbody, .table tr, .table th, .table td {
+        display: block;
+        width: 100%;
+      }
+      .table tr {
         margin-bottom: 15px;
         background: #fff;
         border: 1px solid #dceeff;
@@ -74,14 +83,14 @@
         box-shadow: 0 2px 6px rgba(0, 0, 100, 0.05);
         padding: 10px;
       }
-      td {
+      .td1 {
         position: relative;
         padding-left: 35%;
         border: none;
         border-bottom: 1px solid #f0f0f0;
         text-align: left;
       }
-      td::before {
+      .td1::before {
         content: attr(data-label);
         position: absolute;
         top: 10px;
@@ -91,10 +100,9 @@
         color: #004080;
         white-space: nowrap;
       }
-      td:last-child {
+      .td1:last-child {
         border-bottom: none;
       }
-
     }
   </style>
 </head>
@@ -200,12 +208,12 @@
         dataUser.reverse().forEach(d => {
           const row = `
             <tr>
-              <td data-label='Nama'>${d.nama}</td>
-              <td data-label='Email'>${d.email}</td>
-              <td data-label='Jumlah'>Rp ${parseInt(d.jumlah).toLocaleString("id-ID")}</td>
-              <td data-label='Donasi'>${d.donasi}</td>
-              <td data-label='Metode'>${d.metode}</td>
-              <td data-label='Pesan'>${d.pesan}</td>
+              <td class="td1" data-label='Nama'>${d.nama}</td>
+              <td class="td1" data-label='Email'>${d.email}</td>
+              <td class="td1" data-label='Jumlah'>Rp ${parseInt(d.jumlah).toLocaleString("id-ID")}</td>
+              <td class="td1" data-label='Donasi'>${d.donasi}</td>
+              <td class="td1" data-label='Metode'>${d.metode}</td>
+              <td class="td1" data-label='Pesan'>${d.pesan}</td>
             </tr>
           `;
           donasiBody.insertAdjacentHTML("beforeend", row);
@@ -213,23 +221,40 @@
       }
     }
 
-    document.getElementById("profileLink").addEventListener("click", function (e) {
-      e.preventDefault();
-      const profil = document.getElementById("profil");
-      profil.classList.toggle("show");
-      profil.scrollIntoView({ behavior: "smooth" });
-    });
+     // Toggle tampilkan profil saat klik "Profile"
+ document.getElementById("profileLink").addEventListener("click", function (e) {
+  e.preventDefault();
+  const profilDiv = document.getElementById("profil");
+  profilDiv.classList.add("show");
+  profilDiv.style.display = "block";
 
-    document.addEventListener("click", function (e) {
-      const profil = document.getElementById("profil");
-      if (!profil.contains(e.target) && !document.getElementById("profileLink").contains(e.target)) {
-        profil.classList.remove("show");
-      }
-    });
+  //Scroll ke paling atas
+   window.scrollTo({ top: 0, behavior: "smooth" });
+   
+  // Hentikan propagasi agar klik di tombol tidak dianggap klik di luar
+  e.stopPropagation();
+});
 
-    document.getElementById("profil").addEventListener("click", function (e) {
-      e.stopPropagation();
-    });
+// Tutup profil jika klik di mana saja (kecuali dalam div profil)
+document.addEventListener("click", function (e) {
+  const profilDiv = document.getElementById("profil");
+  const profileLink = document.getElementById("profileLink");
+
+  // Cek apakah kliknya bukan di profil dan bukan di tombol "Profile"
+  if (
+    !profilDiv.contains(e.target) &&
+    !profileLink.contains(e.target)
+  ) { // Jika pengguna mengklik di luar profil dan di luar tombol "Profile", maka...
+    profilDiv.classList.remove("show"); // Menghapus class show dari #profil
+    profilDiv.style.display = "none"; // Menyetel display: none, agar elemen tidak tampak
+  }
+});
+
+// Supaya klik di dalam profil tidak menutup div
+document.getElementById("profil").addEventListener("click", function (e) {
+  e.stopPropagation();
+});
+
 
     function logout() {
       sessionStorage.clear();
