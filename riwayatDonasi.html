@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Riwayat Donasi</title>
   <link rel="shortcut icon" href="gambar/tangan.png" type="image/x-icon">
   <link rel="stylesheet" href="styles2.css" />
@@ -35,7 +36,6 @@
       border-bottom: none;
     }
 
-    /* Profil box */
     .profil {
       max-width: 400px;
       margin: 20px auto;
@@ -43,7 +43,6 @@
       background-color: #ffffff;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: none;
       transition: all 0.3s ease;
     }
@@ -95,6 +94,7 @@
       td:last-child {
         border-bottom: none;
       }
+
     }
   </style>
 </head>
@@ -168,9 +168,35 @@
       const donasiBody = document.getElementById("donasiBody");
       const dataUser = dataDonasi.filter(d => d.email === email);
 
+      function renderKosong() {
+        const isMobile = window.innerWidth <= 750;
+        if (isMobile) {
+          donasiBody.innerHTML = `
+          <tr>
+        <td style="
+          text-align: center;
+          font-weight: bold;
+          border: 1px solid #dceeff;
+          border-radius: 8px;
+          padding: 20px;
+          background-color: #f7faff;
+        ">Belum ada donasi atas nama kamu.</td>
+      </tr>
+          `;
+        } else {
+          donasiBody.innerHTML = `
+            <tr>
+              <td colspan="6" style="text-align:center;">Belum ada donasi atas nama kamu.</td>
+            </tr>
+          `;
+        }
+      }
+
       if (dataUser.length === 0) {
-        donasiBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Belum ada donasi atas nama kamu.</td></tr>`;
+        renderKosong();
+        window.addEventListener("resize", renderKosong);
       } else {
+        donasiBody.innerHTML = "";
         dataUser.reverse().forEach(d => {
           const row = `
             <tr>
@@ -187,7 +213,6 @@
       }
     }
 
-    // Toggle profil
     document.getElementById("profileLink").addEventListener("click", function (e) {
       e.preventDefault();
       const profil = document.getElementById("profil");
@@ -196,12 +221,13 @@
     });
 
     document.addEventListener("click", function (e) {
+      const profil = document.getElementById("profil");
       if (!profil.contains(e.target) && !document.getElementById("profileLink").contains(e.target)) {
         profil.classList.remove("show");
       }
     });
 
-    profil.addEventListener("click", function (e) {
+    document.getElementById("profil").addEventListener("click", function (e) {
       e.stopPropagation();
     });
 
